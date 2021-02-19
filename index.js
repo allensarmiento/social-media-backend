@@ -13,8 +13,14 @@ mongoose.connect(config.mongoUri, {
   useCreateIndex: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
+  dbName: config.mongoDbName,
+  user: config.mongoUser,
+  pass: config.mongoPassword
+}).then(() => {
+  console.log('MongoDB connected');
 });
-mongoose.connection.on('error', () => {
+mongoose.connection.on('error', (error) => {
+  console.log(error);
   throw new Error(`could not connect to mongodb database: ${config.mongoUri}`);
 });
 

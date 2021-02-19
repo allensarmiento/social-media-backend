@@ -11,10 +11,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     trim: true,
     unique: 'Email already exists',
-    match: [/.+\@.+\..+/, 'Please fill in a valid email'],
     required: 'Email is required',
   },
-  hashed_password: {
+  password: {
     type: String,
     required: 'Password is required',
   },
@@ -24,12 +23,11 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-
   about: {
     type: String,
     trim: true,
   },
-  profile_photo: {
+  photo: {
     data: Buffer,
     contentType: String,
   },
@@ -43,4 +41,6 @@ const UserSchema = new mongoose.Schema({
   }],
 });
 
-module.exports = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+
+module.exports = { User };
