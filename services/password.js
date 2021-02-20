@@ -5,11 +5,14 @@ class Password {
     return `${Math.round(new Date().valueOf() * Math.random())}`;
   }
 
-  static hash(password) {
+  static hash(password, salt) {
     if (!password) return { salt: '', password: '' };
 
     try {
-      const salt = this.genSalt();
+      if (!salt) {
+        salt = this.genSalt();
+      }
+
       const hashed = crypto
         .createHmac('sha1', salt)
         .update(password)
@@ -19,6 +22,15 @@ class Password {
     } catch (err) {
       return { salt: '', password: '' };
     }
+  }
+
+  static compare(storedPassData, suppliedPassData) {
+    const { password } = this.hash(
+      suppliedPassData.password,
+      storedPassData.salt
+    );
+
+    return password === storedPassData.password;
   }
 }
 
