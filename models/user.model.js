@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto');
+const { Password } = require('../services/password');
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
@@ -41,6 +41,15 @@ const UserSchema = new mongoose.Schema({
   }],
 });
 
-const User = mongoose.model('User', UserSchema);
+userSchema.pre('save', function(done) {
+  if (this.isModified('password')) {
+    const { salt, password: hashed } = Password.hash(this.get('password'));
+    this.set('password', hashed);
+    this.set('salt', salt);
+  }
+  done();
+});
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = { User };
