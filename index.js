@@ -7,6 +7,7 @@ const cors = require('cors');
 const config = require('./config');
 
 const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 
 mongoose.connect(config.mongoUri, {
   useNewUrlParser: true,
@@ -33,6 +34,7 @@ app.use(helmet());
 app.use(cors());
 
 app.use(authRoutes);
+app.use(userRoutes);
 
 app.listen(config.port, () => {
   console.log(`Listening on port ${config.port}`);
