@@ -18,6 +18,13 @@ const list = async (req, res) => {
   }
 };
 
+const profile = (req, res) => {
+  req.profile.password = undefined;
+  req.profile.salt = undefined;
+  return res.json(req.profile);
+};
+
 module.exports = {
-  list
+  list,
+  profile
 };
